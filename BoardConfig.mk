@@ -33,6 +33,11 @@ TARGET_2ND_CPU_VARIANT := cortex-a55
 # Audio
 AUDIO_FEATURE_ENABLED_EXTENDED_COMPRESS_FORMAT := true
 AUDIO_FEATURE_ENABLED_GKI := true
+SOONG_CONFIG_NAMESPACES += tinycompress
+SOONG_CONFIG_tinycompress += enable_extended_compress_format
+SOONG_CONFIG_tinycompress_enable_extended_compress_format := true
+$(call soong_config_set,qtiaudio,feature_gki,true)
+
 AUDIO_FEATURE_ENABLED_PROXY_DEVICE := true
 AUDIO_FEATURE_ENABLED_SVA_MULTI_STAGE := true
 BOARD_SUPPORTS_OPENSOURCE_STHAL := true
@@ -46,19 +51,23 @@ TARGET_NO_BOOTLOADER := true
 TARGET_SCREEN_DENSITY := 440
 
 # Dolby
-include vendor/oneplus/dolby/BoardConfigDolby.mk
+# Deferred until Dolby source is integrated: include vendor/oneplus/dolby/BoardConfigDolby.mk
 
 # Filesystem
 TARGET_FS_CONFIG_GEN := $(DEVICE_PATH)/config.fs
 
 # GNSS
 BOARD_VENDOR_QCOM_GPS_LOC_API_HARDWARE := default
+SOONG_CONFIG_NAMESPACES += ufsbsg
+SOONG_CONFIG_ufsbsg := ufsframework
+SOONG_CONFIG_ufsbsg_ufsframework := bsg
 
 # Kernel
 BOARD_KERNEL_BASE := 0x00000000
 BOARD_KERNEL_IMAGE_NAME := Image
 BOARD_KERNEL_PAGESIZE := 4096
 BOARD_KERNEL_SEPARATED_DTBO := true
+BOARD_PREBUILT_DTBOIMAGE := device/xiaomi/veux/prebuilt_dtbo.img
 
 BOARD_BOOT_HEADER_VERSION := 3
 BOARD_MKBOOTIMG_ARGS := --header_version $(BOARD_BOOT_HEADER_VERSION)
@@ -84,8 +93,11 @@ BOARD_KERNEL_CMDLINE := \
     ip6table_raw.raw_before_defrag=1 \
     firmware_class.path=/vendor/firmware
 
-TARGET_KERNEL_CONFIG := veux_defconfig
 TARGET_KERNEL_SOURCE := kernel/xiaomi/sm6375
+KERNEL_FULL_LLVM := true
+TARGET_BOARD_KERNEL_HEADERS := device/xiaomi/veux/kernel-headers
+TARGET_KERNEL_EXTRA_MAKE_ARGS += KCFLAGS=-Wno-error=strict-prototypes
+TARGET_KERNEL_EXTRA_MAKE_ARGS += KCFLAGS+=-Wno-error=implicit-int
 
 # OTA assert
 TARGET_OTA_ASSERT_DEVICE := peux,veux
@@ -122,6 +134,7 @@ TARGET_COPY_OUT_VENDOR := vendor
 # Platform
 BOARD_USES_QCOM_HARDWARE := true
 TARGET_BOARD_PLATFORM := holi
+$(call soong_config_set,rmnetctl,old_rmnet_data,true)
 
 # Properties
 TARGET_ODM_PROP += $(DEVICE_PATH)/odm.prop
@@ -147,7 +160,7 @@ VENDOR_SECURITY_PATCH := $(BOOT_SECURITY_PATCH)
 include device/qcom/sepolicy_vndr/SEPolicy.mk
 include device/lineage/sepolicy/libion/sepolicy.mk
 include device/lineage/sepolicy/libperfmgr/sepolicy.mk
-include vendor/xiaomi/miuicamera-veux/SEPolicy-veux.mk
+# Deferred until MIUI Camera source is integrated: include vendor/xiaomi/miuicamera-veux/SEPolicy-veux.mk
 SYSTEM_EXT_PRIVATE_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy/private
 SYSTEM_EXT_PUBLIC_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy/public
 BOARD_VENDOR_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy/vendor

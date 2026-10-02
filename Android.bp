@@ -6,9 +6,32 @@
 soong_namespace {
     imports: [
         "hardware/lineage/interfaces/power-libperfmgr",
-        "hardware/qcom-caf/common/libqti-perfd-client",
+        "device/qcom/common/libqti-perfd-client",
         "hardware/xiaomi",
     ],
+}
+
+kernel_headers {
+    name: "generated_kernel_headers",
+    vendor_available: true,
+    recovery_available: true,
+    min_sdk_version: "apex_inherit",
+}
+
+cc_defaults {
+    name: "generated_kernel_header_defaults",
+    header_libs: ["generated_kernel_headers"],
+    export_header_lib_headers: ["generated_kernel_headers"],
+    vendor_available: true,
+    recovery_available: true,
+}
+
+install_symlink {
+    name: "CneApp.libvndfwk_detect_jni.qti_symlink",
+    vendor: true,
+    installed_location: "app/CneApp/lib/arm64/libvndfwk_detect_jni.qti.so",
+    symlink_target: "/vendor/lib64/libvndfwk_detect_jni.qti.so",
+    required: ["libvndfwk_detect_jni.qti.vendor"],
 }
 
 install_symlink {

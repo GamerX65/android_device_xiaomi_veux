@@ -4,7 +4,7 @@
 #
 
 # Add common definitions for Qualcomm
-$(call inherit-product, hardware/qcom-caf/common/common.mk)
+$(call inherit-product, device/qcom/common/common.mk)
 
 # Enable project quotas and casefolding for emulated storage without sdcardfs
 $(call inherit-product, $(SRC_TARGET_DIR)/product/emulated_storage.mk)
@@ -114,7 +114,7 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/display/displayconfig.xml:$(TARGET_COPY_OUT_VENDOR)/etc/displayconfig/display_id_4630947081618265473.xml
 
 # Dolby
-$(call inherit-product, vendor/oneplus/dolby/dolby.mk)
+# Deferred until Dolby source is integrated: $(call inherit-product, vendor/oneplus/dolby/dolby.mk)
 
 # DRM
 PRODUCT_PACKAGES += \
@@ -327,6 +327,8 @@ PRODUCT_PACKAGES += \
 
 # Shipping API level
 PRODUCT_SHIPPING_API_LEVEL := 30
+# Legacy 5.4 vendor kernel: retain non-kernel VINTF checks while omitting OTA kernel-FCM metadata.
+PRODUCT_OTA_ENFORCE_VINTF_KERNEL_REQUIREMENTS := false
 
 # Soong
 PRODUCT_SOONG_NAMESPACES += \
@@ -334,9 +336,15 @@ PRODUCT_SOONG_NAMESPACES += \
     hardware/google/interfaces \
     hardware/google/pixel/power-libperfmgr \
     hardware/lineage/interfaces/power-libperfmgr \
-    hardware/qcom-caf/common/libqti-perfd-client \
+    device/qcom/common/libqti-perfd-client \
     hardware/xiaomi \
-    vendor/qcom/opensource/usb/etc
+    vendor/qcom/opensource/usb/etc \
+    vendor/qcom/opensource/interfaces/qacs/ambientdatacapture \
+    vendor/qcom/opensource/commonsys/display \
+    vendor/qcom/opensource/commonsys-intf/display \
+    hardware/qcom-caf/sm8350 \
+    hardware/qcom-caf/wlan \
+    hardware/qcom-caf/wlan/qcwcn
 
 # Telephony
 PRODUCT_PACKAGES += \
@@ -358,7 +366,6 @@ PRODUCT_PACKAGES += \
     xiaomi-telephony-stub
 
 PRODUCT_BOOT_JARS += \
-    telephony-ext \
     xiaomi-telephony-stub
 
 # Thermal
@@ -394,16 +401,14 @@ PRODUCT_COPY_FILES += \
 
 # VINTF
 DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE += \
-    hardware/qcom-caf/common/vendor_framework_compatibility_matrix.xml \
+    device/qcom/common/vendor_framework_compatibility_matrix.xml \
     hardware/xiaomi/vintf/xiaomi_framework_compatibility_matrix.xml \
-    vendor/oneplus/dolby/vintf/dolby_framework_compatibility_matrix.xml
+    device/xiaomi/veux/vintf/framework_compatibility_matrix.xml
 
-DEVICE_MANIFEST_FILE := \
-    vendor/oneplus/dolby/vintf/dolby_manifest.xml \
-    $(LOCAL_PATH)/vintf/manifest.xml
+DEVICE_MANIFEST_FILE := $(LOCAL_PATH)/vintf/manifest.xml
 
 DEVICE_MATRIX_FILE := \
-    hardware/qcom-caf/common/compatibility_matrix.xml
+    device/qcom/common/compatibility_matrix.xml
 
 ODM_MANIFEST_SKUS += \
     sn100
@@ -428,4 +433,4 @@ PRODUCT_PACKAGES += \
 
 # Inherit from proprietary targets
 $(call inherit-product, vendor/xiaomi/veux/veux-vendor.mk)
-$(call inherit-product, vendor/xiaomi/miuicamera-veux/MiuiCamera-veux.mk)
+# Deferred until MIUI Camera source is integrated: $(call inherit-product, vendor/xiaomi/miuicamera-veux/MiuiCamera-veux.mk)

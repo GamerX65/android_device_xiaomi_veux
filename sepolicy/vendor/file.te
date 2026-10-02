@@ -1,0 +1,12 @@
+type vendor_sysfs_battery_supply, sysfs_type, fs_type;
+type vendor_sysfs_usb_supply, sysfs_type, fs_type;
+type vendor_sysfs_usbpd_device, sysfs_type, fs_type;
+type vendor_wifi_vendor_data_file, file_type, data_file_type;
+type vendor_uefi_block_device, dev_type;
+type vendor_sysfs_spss, fs_type, sysfs_type;
+type vendor_sysfs_fingerprint, sysfs_type, fs_type;
+type firmware_file, file_type, contextmount_type, vendor_file_type;
+type vendor_sysfs_kgsl, sysfs_type, fs_type;
+type vendor_sysfs_graphics, sysfs_type, fs_type;
+type vendor_bsg_device, dev_type;
+type vendor_sysfs_audio, fs_type, sysfs_type;

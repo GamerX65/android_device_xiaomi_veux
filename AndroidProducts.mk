@@ -1,7 +1,2 @@
-#
-# SPDX-FileCopyrightText: The LineageOS Project
-# SPDX-License-Identifier: Apache-2.0
-#
-
 PRODUCT_MAKEFILES := \
-    $(LOCAL_DIR)/custom_veux.mk
+    $(LOCAL_DIR)/aospa_veux.mk
